@@ -3,6 +3,7 @@ function Index() {
   let watchDog = 10;
   let commands = [];
   let currentCommand = [];
+  let clearCommandInterval;
   let morseData = [
     [['T'], ['E']],
     [['M', 'N'], ['A', 'I']],
@@ -32,13 +33,25 @@ function Index() {
     // $('#divMorseTree').empty();
     buildMorseTree(0);
     buildMorseTree(1);
+
+    if( $('#divMorseTreeContainer').width() > $(window).width() ) {
+      $('#divMorseTreeContainer').css( 'scale', ( $(window).width() - 32 ) / $('#divMorseTreeContainer').width() );
+    }
+
     this.observer();
   }
 
   this.observer = function() {
 
-    let clearCommandInterval;
     // Ação de editar um quadro
+    $('#preTextVisualization').on( 'doubleclick', function(e) {
+      e.preventDefault();
+    });
+
+    $('#preTextVisualization').on( 'pointerdown', function(e) {
+      startNewCommand();
+    });
+
     $('body').on( 'keydown', function(e) {
 
       // Se for backspace, apaga a última sequência de instruções
@@ -51,35 +64,48 @@ function Index() {
 
       if( e.keyCode === 32 ) {
         e.preventDefault();
-
-        clearTimeout( clearCommandInterval );
-
-        const startTime = ( new Date() ).getTime();
-        $('body').one( 'keyup', function(e) {
-          if( e.keyCode === 32 ) {
-            const endTime = ( new Date() ).getTime();
-            if( ( endTime - startTime ) < 200 ) {
-              // É toque simples
-              currentCommand.push( '.' );
-            } else {
-              // É toque contínuo
-              currentCommand.push( '-' );
-            }
-
-            updateFeedBack( getValue() );
-
-            clearCommandInterval = setTimeout( () => {
-              commands.push( currentCommand );
-              updateTextsVisualizations();
-              currentCommand = [];
-
-              updateFeedBack();
-            }, 500 );
-          }
-        });
+        startNewCommand();
       }
     });
     
+  }
+
+  function startNewCommand() {
+    clearTimeout( clearCommandInterval );
+    const startTime = ( new Date() ).getTime();
+
+    $('#preTextVisualization').one( 'pointerup', function(e) {
+      endNewCommand(); 
+    });
+
+    $('body').one( 'keyup', function(e) {
+      if( e.keyCode === 32 ) {
+        endNewCommand();
+      }
+    });
+
+    function endNewCommand() {
+      const endTime = ( new Date() ).getTime();
+      if( ( endTime - startTime ) < 200 ) {
+        // É toque simples
+        currentCommand.push( '.' );
+      } else {
+        // É toque contínuo
+        currentCommand.push( '-' );
+      }
+
+      updateFeedBack( getValue() );
+
+      clearCommandInterval = setTimeout( () => {
+        commands.push( currentCommand );
+        updateTextsVisualizations();
+        currentCommand = [];
+
+        updateFeedBack();
+      }, 500 );
+
+    }
+
   }
 
   function updateTextsVisualizations() {

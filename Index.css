@@ -1,7 +1,30 @@
-body {
-  font-family: "Roboto", sans-serif;
+
+html {
+  width: 100dvw;
+  max-height: 100dvh !important;
+  overflow: hidden;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  touch-action: manipulation;
+
+  height: 100dvh;
+  padding: 0;
+  /* min-width: 100vw; */
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Roboto", sans-serif;
+
+  overflow: hidden;
+}
 
 #divMorseTreeContainer {
   user-select: none;
@@ -93,8 +116,8 @@ body {
   aspect-ratio: 4/3 !important;
   border-radius: 4px;
   
-  width: 1em;
-  height: 1.75em;
+  width: fit-content;
+  min-width: 1em;
   font-size: 1.25em;
   text-align: center !important;
 
@@ -158,7 +181,7 @@ body {
 #preCurrentCommandVisualization, #preCommandsVisualization, #preTextVisualization {
   font-size: 20px; 
   min-height: 50px; 
-  min-width: 800px; 
+  /* min-width: min( 100%, 800px );  */
   width: fit-content; 
   margin: auto; 
   padding: .25em .5em; 

@@ -6,12 +6,12 @@
   <title>Document</title>
   <link rel="stylesheet" href="./Index.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Birthstone&family=Roboto:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Birthstone&family=Roboto:wght@100..900&display=swap" rel="stylesheet">
 </head>
-<body style="padding: 2rem;">
+<body>
   
-  <div id="divMorseTreeContainer" style="max-width: 100%;">
+  <div id="divMorseTreeContainer" style="width: fit-content; padding: 2em !important;">
 
     <div class="flex">
       <!--  _______ -->
@@ -25,7 +25,7 @@
         <div style="text-align: right;" class="value" value="E">E</div>
       </div>
     </div>
-    <div id="divMorseTree" style="min-height: 400px; width: 100%; display: flex; gap: 2rem;">
+    <div id="divMorseTree" style="min-height: 400px; width: fit-content; display: flex; gap: 2rem;">
       
       <div id="divMorseTreeLeftSide" style=" min-height: 400px; width: 100%;">
         
@@ -37,18 +37,20 @@
 
   </div>
   
-  <div class="flex" style="gap: 1em; margin-top: 2em;">
+  <div class="flex" style="gap: 1em; margin-top: 2em; flex-wrap: wrap;">
     <div style="position: relative;">
       <span style="font-weight: 300; font-size: .75em; position: absolute; margin: .25em .5em; top: 0; left: 0;">Comando atual</span>
       <pre id="preCurrentCommandVisualization">
       </pre>
     </div>
-  
+
     <pre id="preCommandsVisualization" style="flex-grow: 1;">
     </pre>
   </div>
 
-  <pre id="preTextVisualization">
+  <hr style="width: 100%; margin: .5em 0"/>
+
+  <pre id="preTextVisualization" style="background-color: aliceblue; flex-grow: 1; width: 100%;">
   </pre>
 
 </body>
