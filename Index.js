@@ -52,14 +52,15 @@ function Index() {
       startNewCommand();
     });
 
+    $('#btnUndoLastCommand').on( 'click', function(e) {
+      removeLastCommand();
+    });
+
     $('body').on( 'keydown', function(e) {
 
       // Se for backspace, apaga a última sequência de instruções
       if( e.keyCode === 8 ) {
-        commands.pop();
-        currentCommand = [];
-        updateTextsVisualizations();
-        $('#preCurrentCommandVisualization').text('');
+        removeLastCommand();
       }
 
       if( e.keyCode === 32 ) {
@@ -68,6 +69,14 @@ function Index() {
       }
     });
     
+  }
+
+  function removeLastCommand() {
+    commands.pop();
+    currentCommand = [];
+    updateTextsVisualizations();
+    $('#preCurrentCommandVisualization').text('');
+
   }
 
   function startNewCommand() {
@@ -97,7 +106,9 @@ function Index() {
       updateFeedBack( getValue() );
 
       clearCommandInterval = setTimeout( () => {
-        commands.push( currentCommand );
+        if( currentCommand.length ) {
+          commands.push( currentCommand );
+        }
         updateTextsVisualizations();
         currentCommand = [];
 
