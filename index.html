@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Morse</title>
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/260/260403.png" type="image/x-icon">
   <link rel="stylesheet" href="./Index.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +12,7 @@
 </head>
 <body>
   
-  <div id="divMorseTreeContainer" style="width: fit-content; padding: 2em !important;">
+  <div id="divMorseTreeContainer" style="width: fit-content; padding: 2em !important; min-height: fit-content;">
 
     <div class="flex">
       <!--  _______ -->
@@ -44,13 +45,13 @@
       </pre>
     </div>
 
-    <pre id="preCommandsVisualization" style="flex-grow: 1;">
+    <pre id="preCommandsVisualization" style="flex-grow: 1; height: 100px;">
     </pre>
   </div>
 
   <hr style="width: 100%; margin: .5em 0"/>
 
-  <pre id="preTextVisualization" style="background-color: aliceblue; flex-grow: 1; width: 100%;">
+  <pre id="preTextVisualization" style="background-color: aliceblue; flex-grow: 1; width: 100%; min-height: 200px;">
   </pre>
 
 </body>

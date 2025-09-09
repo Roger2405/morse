@@ -15,7 +15,9 @@ body {
   touch-action: manipulation;
 
   height: 100dvh;
-  padding: 0;
+  padding: 1em;
+  gap: 1em;
+
   /* min-width: 100vw; */
   width: 100vw;
   display: flex;

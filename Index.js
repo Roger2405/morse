@@ -35,7 +35,7 @@ function Index() {
     buildMorseTree(1);
 
     if( $('#divMorseTreeContainer').width() > $(window).width() ) {
-      $('#divMorseTreeContainer').css( 'scale', ( $(window).width() - 32 ) / $('#divMorseTreeContainer').width() );
+      $('#divMorseTreeContainer').css( 'zoom', ( $(window).width() - 32 ) / $('#divMorseTreeContainer').width() );
     }
 
     this.observer();
