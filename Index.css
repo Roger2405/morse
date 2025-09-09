@@ -28,6 +28,7 @@ body {
 
 #divMorseTreeContainer {
   user-select: none;
+  max-height: 50%;
 }
 
 .left .h {
