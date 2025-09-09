@@ -189,3 +189,7 @@ body {
   line-height: 2em; 
   /* margin-top: .5em; */
 }
+
+#preTextVisualization {
+  user-select: none;
+}
