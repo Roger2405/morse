@@ -16,13 +16,13 @@ function Index() {
     <div class="flex">
       <!--  _______ -->
       <!-- |        -->
-      <div style="width: 25%;">
+      <div class="left" style="width: 25%;">
         <div class="flex left"><div class="v"></div><div class="h"></div></div>
         <div style="text-align: left;" class="value">-</div>
       </div>
       <!-- _______  -->
       <!--        | -->
-      <div style="width: 25%;">
+      <div class="right" style="width: 25%;">
         <div class="flex right"><div class="h"></div><div class="v"></div></div>
         <div style="text-align: right;" class="value">-</div>
       </div>
@@ -43,7 +43,6 @@ function Index() {
 
   this.observer = function() {
 
-    // Ação de editar um quadro
     $('#preTextVisualization').on( 'doubleclick', function(e) {
       e.preventDefault();
     });
@@ -52,25 +51,34 @@ function Index() {
       startNewCommand();
     });
 
+    $('#preTextInsert').on( 'input', function(e) {
+      e.preventDefault();
+      revertConversion( $(this).val() );
+    });
+
     $('#btnUndoLastCommand').on( 'click', function(e) {
       removeLastCommand();
     });
 
-    $('body').on( 'keydown', function(e) {
+    $('body').one( 'keydown', handleKeyDown );
+    
+  }
 
+  function handleKeyDown(e) {
+
+    if( e.keyCode === 32 && !$( e.target ).is( '#preTextInsert' ) ) {
+      e.preventDefault();
+      startNewCommand();
+    } else {
       // Se for backspace, apaga a última sequência de instruções
       if( e.keyCode === 8 ) {
         removeLastCommand();
       }
 
-      if( e.keyCode === 32 ) {
-        e.preventDefault();
-        startNewCommand();
-      }
-    });
-    
+      $('body').one( 'keydown', handleKeyDown );
+      
+    }
   }
-
   function removeLastCommand() {
     commands.pop();
     currentCommand = [];
@@ -92,9 +100,12 @@ function Index() {
         endNewCommand();
       }
     });
+    
+    endNewCommand = function() {
+      $('body').one( 'keydown', handleKeyDown );
 
-    function endNewCommand() {
       const endTime = ( new Date() ).getTime();
+
       if( ( endTime - startTime ) < 200 ) {
         // É toque simples
         currentCommand.push( '.' );
@@ -106,6 +117,7 @@ function Index() {
       updateFeedBack( getValue() );
 
       clearCommandInterval = setTimeout( () => {
+
         if( currentCommand.length ) {
           commands.push( currentCommand );
         }
@@ -119,9 +131,65 @@ function Index() {
 
   }
 
+  function revertConversion( textToConvert = '' ) {
+    let result = '';
+
+    let chars = textToConvert.trim().split('').map( i => i.toUpperCase() );
+    console.log( chars );
+    let allConvertedCommands = [];
+    chars.forEach( char => {
+      let wd = 10;
+      let currentChar = char;
+      let convertedCommands = [];
+
+      if( char === ' ' ) {
+        console.log( "Pushando space")
+        convertedCommands.push(' ');
+      }
+      while( wd > 0 && $( '.value[value="' + currentChar + '"]' ).length ) {
+
+        let direction = $( '.value[value="' + currentChar + '"]' ).parent().attr( 'class' );
+
+        if( direction ) {
+          
+          let previousValueElement = $( '.value[' + ( direction.includes('right') ? 'right-value' : 'left-value' ) + '="' + currentChar + '"]' );
+          
+          convertedCommands.push( direction.includes('right') ? '.' : '-' );
+          if( previousValueElement.length ) {
+            currentChar = $( '.value[' + ( direction.includes('right') ? 'right-value' : 'left-value' ) + '="' + currentChar + '"]' ).attr('value');
+          } else {
+            let containerSideId = $( '.value[value="' + currentChar + '"]' ).closest('.morseRow').parent().attr('id');
+            if( containerSideId ) {
+              convertedCommands.push( ( containerSideId || '' ) === 'divMorseTreeRightSide' ? '.' : '-' );
+            }
+            break;
+          }
+          
+        }
+
+        wd--;
+
+      }
+
+      allConvertedCommands.push( convertedCommands.reverse() );
+      
+    });
+
+    // $('#preCommandsVisualization').text( allConvertedCommands.map( i => i.join('') ).join( ' ' ) )
+
+    console.log( "Resultado:")
+    console.log( result )
+
+    commands = allConvertedCommands;
+    currentCommand = allConvertedCommands.pop();
+    updateFeedBack( chars.pop() );
+    updateTextsVisualizations();
+    
+  }
+
   function updateTextsVisualizations() {
-    $('#preCommandsVisualization').text( commands.map( command => command.join('') ).join( ' ' ));
-    $('#preTextVisualization').text( commands.map( getValue ).join('') );
+    $('#preCommandsVisualization').text( commands.map( command => command.join('') !== ' ' ? command.join('') : ' ' ).join( '  ' ));
+    $('#preTextVisualization').text( commands.map( value => value.join('') !== ' ' ? getValue( value ) : ' ' ).join('') );
   }
 
   function updateFeedBack( value ) {
@@ -183,17 +251,17 @@ function Index() {
       depth = 0;
     }
 
-    if( ( morseData[depth] || [] )[side] ) {
+    if( ( ( morseData[depth] || [] )[side] || [] ).length ) {
       let targetContainer = side == 0 ? 'divMorseTreeLeftSide' : 'divMorseTreeRightSide';
       $('#' + targetContainer ).append( `<div class="flex morseRow" style="gap: 2rem">${ rowStruct.repeat( morseData[depth][side].length / 2 ) }</div>` );
 
       morseData[depth][side].forEach( ( value, index ) => {
         if( value ) {
+          // Marca quais valores são à direita ou à esquerda, para fazer o mapeamento da conversão inversa
+          $('#' + targetContainer + ' .morseRow').last().prev().find('.value').eq( Math.floor( index / 2 ) ).attr( index % 2 ? 'right-value' : 'left-value', value );
           $('#' + targetContainer + ' .morseRow').last().find( '.value' ).eq( index ).text( value ).attr( 'value', value );
         } else {
           $('#' + targetContainer + ' .morseRow').last().find( '.value' ).eq( index ).parent().css('opacity', 0);
-          // $('#' + targetContainer + ' .morseRow').last().find('.flex').css('opacity', 0);
-          // $('#' + targetContainer + ' .morseRow').last().find( '.h' ).eq( index ).css('opacity', 0);
         }
       });
 

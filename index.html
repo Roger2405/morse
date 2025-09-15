@@ -17,11 +17,11 @@
     <div class="flex">
       <!--  _______ -->
       <!-- |        -->
-      <div style="width: 25%;">
+      <div style="width: 25%;" class="left">
         <div class="flex left"><div class="v"></div><div class="h"></div><div class="h"></div></div>
         <div style="text-align: left;" class="value" value="T">T</div>
       </div>
-      <div style="width: 25%;">
+      <div style="width: 25%;" class="right">
         <div class="flex right"><div class="h"></div><div class="h"></div><div class="v"></div></div>
         <div style="text-align: right;" class="value" value="E">E</div>
       </div>
@@ -52,8 +52,12 @@
 
   <hr style="width: 100%; margin: .5em 0"/>
 
-  <pre id="preTextVisualization" style="background-color: aliceblue; flex-grow: 1; width: 100%; min-height: 200px;">
-  </pre>
+  <div style="width: 100%;">
+    <textarea id="preTextInsert" style="outline: 2px ridge #e4edef; padding: .5em 1em !important; height: 50%; width: 100%; background-color: rgb(247, 251, 255); flex-grow: 1; width: 100%; min-height: 200px;">
+    </textarea>
+    <pre id="preTextVisualization" style="height: 50%; width: 100%; background-color: aliceblue; flex-grow: 1; width: 100%; min-height: 200px;">
+    </pre>
+  </div>
 
 </body>
 <script src="https://unpkg.com/phosphor-icons"></script>
