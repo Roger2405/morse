@@ -132,10 +132,8 @@ function Index() {
   }
 
   function revertConversion( textToConvert = '' ) {
-    let result = '';
 
     let chars = textToConvert.trim().split('').map( i => i.toUpperCase() );
-    console.log( chars );
     let allConvertedCommands = [];
     chars.forEach( char => {
       let wd = 10;
@@ -143,7 +141,6 @@ function Index() {
       let convertedCommands = [];
 
       if( char === ' ' ) {
-        console.log( "Pushando space")
         convertedCommands.push(' ');
       }
       while( wd > 0 && $( '.value[value="' + currentChar + '"]' ).length ) {
@@ -175,13 +172,10 @@ function Index() {
       
     });
 
-    // $('#preCommandsVisualization').text( allConvertedCommands.map( i => i.join('') ).join( ' ' ) )
-
-    console.log( "Resultado:")
-    console.log( result )
-
     commands = allConvertedCommands;
-    currentCommand = allConvertedCommands.pop();
+    currentCommand = commands.at(-1);
+
+    updateFeedBack();
     updateFeedBack( chars.pop() );
     updateTextsVisualizations();
     
